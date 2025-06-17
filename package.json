@@ -3,7 +3,7 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "build": "remix build && node build-vercel.js",
+    "build": "remix build",
     "dev": "remix dev",
     "start": "remix-serve ./build/index.js"
   },
