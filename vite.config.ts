@@ -8,6 +8,11 @@ export default defineConfig({
   plugins: [
     remix({
       ignoredRouteFiles: ["**/.*"],
+      buildDirectory: "build",
+      serverBuildPath: "build/index.js",
     }),
   ],
+  build: {
+    assetsDir: "assets",
+  }
 });
