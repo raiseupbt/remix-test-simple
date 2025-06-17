@@ -1,35 +1,31 @@
-# 🚀 Remix Test Simple
+# 🚀 Remix Test Simple - v1 Edition
 
-Projeto Remix mínimo para testar deploy na Vercel com função serverless.
+Projeto Remix **v1.19.3** para testar deploy na Vercel com adapter oficial.
 
 ## 🎯 Objetivo
 
-Teste para verificar se Remix v2 funciona na Vercel usando função serverless manual.
+Testar se Remix v1 funciona melhor na Vercel que o v2.
 
-## 📦 O que está incluído
+## 📦 O que mudou
 
-- ✅ Remix v2.5.1
-- ✅ React 18.2.0
-- ✅ Vite 5.0.0
-- ✅ **api/index.js** - Função serverless manual
-- ✅ **vercel.json** - Configuração de roteamento
-- ✅ TypeScript
+- ⬇️ **Downgrade para Remix v1.19.3**
+- ✅ **Adapter oficial `@remix-run/vercel`**
+- ❌ **Sem Vite** - Remix v1 usa esbuild
+- ✅ **Configuração testada e estável**
 
-## 🔧 Estratégia Usada
+## 🔧 Stack
 
-Como o builder automático do Remix na Vercel está com problemas, usamos:
-
-1. **Função Serverless Manual** (`api/index.js`)
-2. **Rewrite Rules** (`vercel.json`) 
-3. **Framework Preset: Other** (não Remix)
+- **Remix v1.19.3** - Versão estável
+- **React 18.2.0** - Compatível
+- **TypeScript 4.9.5** - Versão estável
+- **@remix-run/vercel** - Adapter oficial
 
 ## 🚀 Deploy na Vercel
 
-1. Importe este repositório na Vercel
-2. **Framework Preset: `Other`** ⚠️ (não Remix!)
-3. Build Command: `npm run build`
-4. Output Directory: deixe vazio
-5. Deploy!
+1. **Framework Preset:** `Remix`
+2. **Build Command:** `npm run build`
+3. **Output Directory:** deixe vazio
+4. **Install Command:** `npm install`
 
 ## 📋 Estrutura
 
@@ -37,62 +33,65 @@ Como o builder automático do Remix na Vercel está com problemas, usamos:
 ├── app/
 │   ├── routes/
 │   │   └── _index.tsx     # Página inicial
-│   ├── root.tsx           # Layout raiz
+│   ├── root.tsx           # Layout raiz (com LiveReload)
 │   ├── entry.server.tsx   # Server entry
 │   └── entry.client.tsx   # Client entry
-├── api/
-│   └── index.js           # 🔑 Função serverless
-├── vercel.json            # 🔑 Configuração roteamento
-├── vite.config.ts         # Configuração Vite
-└── package.json           # Dependencies
+├── remix.config.js        # 🔑 Config com adapter Vercel
+├── package.json           # Remix v1 dependencies
+└── vercel.json            # {} - configuração mínima
 ```
 
-## 🔑 Arquivos Chave
+## 🔑 Configuração Chave
 
-### `api/index.js`
+### `remix.config.js`
 ```javascript
-const { createRequestHandler } = require("@remix-run/node");
-
-module.exports = async (req, res) => {
-  const build = await import("../build/index.js");
-  const handler = createRequestHandler({ build });
-  return handler(req, res);
+module.exports = {
+  ignoredRouteFiles: ["**/.*"],
+  server: "@remix-run/vercel",
+  serverBuildPath: "api/index.js"
 };
 ```
 
-### `vercel.json`
+### `package.json`
 ```json
 {
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/api/index"
-    }
-  ]
+  "dependencies": {
+    "@remix-run/node": "^1.19.3",
+    "@remix-run/react": "^1.19.3", 
+    "@remix-run/serve": "^1.19.3",
+    "@remix-run/vercel": "^1.19.3"
+  }
 }
 ```
 
-## ✅ Se Funcionar
+## ✅ Esperado vs v2
 
-- ✅ Estratégia serverless manual funciona
-- ✅ Pode aplicar no projeto principal
+| Feature | Remix v1 | Remix v2 |
+|---------|-----------|----------|
+| Vercel Support | ✅ Oficial | ❌ Problemas |
+| Build System | esbuild | Vite |
+| Adapter | Funciona | Crashs |
+| Deploy | Simples | Complexo |
+
+## 🧪 URLs de Teste
+
+Após deploy, teste:
+
+1. **`/`** - Homepage principal
+2. **`/api/hello`** - Função simples (ainda funciona)
+3. **DevTools** - Sem erros console
+
+## 💡 Se Funcionar
+
+- ✅ Remix v1 é mais estável na Vercel
+- ✅ Podemos aplicar no projeto principal
+- ✅ Solução encontrada!
 
 ## ❌ Se Não Funcionar
 
-- ❌ Problema mais profundo com Remix + Vercel
-- 🔄 Considerar outras plataformas (Railway, Fly.io)
-
-## 🧪 Como Testar
-
-1. Acesse a URL do deploy
-2. Veja se a página carrega corretamente
-3. Se ver "✅ FUNCIONANDO", a estratégia funciona!
-
-## 🔗 Links
-
-- **Repositório**: https://github.com/raiseupbt/remix-test-simple
-- **Deploy URL**: Será gerado após deploy na Vercel
+- 🤔 Problema mais profundo
+- 🔄 Considerar outras plataformas
 
 ---
 
-**Estratégia**: Bypass do builder automático + função serverless manual
+**🎯 Teste Principal**: Verificar se Remix v1 + Vercel = Success!
