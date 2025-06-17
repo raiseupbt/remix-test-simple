@@ -3,8 +3,7 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "build": "remix build && npm run build:vercel",
-    "build:vercel": "mkdir -p public && cp -r build/client/* public/ 2>/dev/null || true",
+    "build": "remix build && node build-vercel.js",
     "dev": "remix dev",
     "start": "remix-serve ./build/index.js"
   },
